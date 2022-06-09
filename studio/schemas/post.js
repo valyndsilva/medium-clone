@@ -53,6 +53,13 @@ export default {
       title: 'Body',
       type: 'blockContent',
     },
+    {
+      name: 'trending',
+      title: 'Trending',
+      type: 'boolean',
+      description:
+        "Posts approved as 'trending' will be show on the site under Trending Now.",
+    },
   ],
 
   preview: {

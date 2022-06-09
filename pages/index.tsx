@@ -2,15 +2,16 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '../components/Header';
+import Trending from '../components/Trending';
 import { sanityClient, urlFor } from '../lib/sanity';
 import { Post } from '../typings';
-
+import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 interface Props {
   posts: [Post]; // array of type Post: Post[] or [Post]
 }
 
 export default function Home({ posts }: Props) {
-  console.log(posts);
+  // console.log(posts);
   return (
     // <div className="flex min-h-screen flex-col items-center justify-center py-2">
     <div className="">
@@ -40,8 +41,18 @@ export default function Home({ posts }: Props) {
           src="/medium-article-thumbnail.png"
         />
       </div>
+
+      <div className="flex flex-col font-bold text-sm border-y px-20 py-10 max-w-7xl mx-auto">
+        <h3>
+          <TrendingUpRoundedIcon className="rounded-3xl border border-gray-500 text-gray-500 pr-1 mr-2" />
+          TRENDING ON MEDIUM
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 p-2  max-w-7xl mt-5 mx-auto lg:p-6">
+          <Trending posts={posts} />
+        </div>
+      </div>
       {/* Posts */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 p-2 max-w-7xl mt-10 mx-auto lg:p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 p-2 max-w-7xl mt-5 mx-auto lg:p-6">
         {posts.map((post) => (
           <Link key={post._id} href={`/post/${post.slug.current}`}>
             <div className="group cursor-pointer border rounded-lg overflow-hidden">
@@ -68,6 +79,7 @@ export default function Home({ posts }: Props) {
             </div>
           </Link>
         ))}
+        <Trending posts={posts} />
       </div>
       <footer className="flex h-24 w-full items-center justify-center border-t">
         <a

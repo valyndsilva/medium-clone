@@ -14,6 +14,8 @@ export interface Post {
     current: string;
   };
   body: [object];
+  trending: boolean;
+  trendings: Trending[];
 }
 
 export interface Comment {
@@ -31,3 +33,20 @@ export interface Comment {
   _type: string;
   _updatedAt: string;
 }
+
+// export interface Trending {
+//   _createdAt: string;
+//   _id: string;
+//   title: string;
+//   slug: {
+//     current: string;
+//   };
+//   author: {
+//     name: string;
+//     image: string;
+//   };
+//   description: string;
+//   mainImage: { asset: { url: string } };
+//   body: [object];
+//   comments: Comment[];
+// }

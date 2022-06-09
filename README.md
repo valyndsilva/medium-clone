@@ -10,6 +10,7 @@
 - Tailwind CSS
 - Sanity CMS
 - GROQ
+- MaterialUI Icons
 
 ## Scripts used:
 
@@ -18,6 +19,7 @@ npx create-next-app --example with-tailwindcss medium-clone
 npm install -g @sanity/cli
 sanity init --coupon sonny2022
 npm run dev
+npm install @mui/material @emotion/react @emotion/styled
 ```
 
 ## Implementation

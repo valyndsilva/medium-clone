@@ -20,6 +20,8 @@ npm install -g @sanity/cli
 sanity init --coupon sonny2022
 npm run dev
 npm install @mui/material @emotion/react @emotion/styled
+npm install --save moment react-moment
+npm install --save moment-timezone
 ```
 
 ## Implementation

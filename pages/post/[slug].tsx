@@ -5,8 +5,9 @@ import { sanityClient, urlFor } from '../../lib/sanity';
 import { Post } from '../../typings';
 import PortableText from 'react-portable-text';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import TimeAgo from 'react-timeago';
-import { useReadingTime } from 'react-reading-time-estimator';
+import Moment from 'react-moment';
+import 'moment-timezone';
+
 import {
   Twitter,
   FacebookRounded,
@@ -28,11 +29,6 @@ interface FormInput {
 }
 
 function Post({ post }: Props) {
-  const {
-    text, // 1 min read
-    minutes, // 1
-  } = useReadingTime(post.description);
-
   const [submitted, setSubmitted] = useState(false);
   console.log(post);
   // React Hook Form
@@ -78,11 +74,10 @@ function Post({ post }: Props) {
             <div>
               <span className="font-light text-md">{post.author.name}</span>
               <p className="font-extralight text-sm">
-                <TimeAgo
-                  className="text-sm text-gray-500"
-                  date={post._createdAt}
-                />
-                &nbsp; · &nbsp;{Math.ceil(minutes)} min read
+                <Moment fromNow className="text-sm text-gray-500">
+                  {post._createdAt}
+                </Moment>
+                &nbsp;
               </p>
             </div>
           </div>
@@ -176,10 +171,9 @@ function Post({ post }: Props) {
 
             <p className="font-extralight text-md">
               Published&nbsp;
-              <TimeAgo
-                className="text-sm text-gray-500"
-                date={post._createdAt}
-              />
+              <Moment fromNow className="text-sm text-gray-500">
+                {post._createdAt}
+              </Moment>
             </p>
           </div>
         </div>

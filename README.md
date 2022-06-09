@@ -345,7 +345,14 @@ Note: You can skip this step if you already have a project set up.
 ```
 npm i -g @sanity/cli
 sanity init (To initiate a new project and download the Studio code to your computer)
-sanity start (To start a local development server, cd into the project folder)
+Your project name: project-name
+default config?: y
+project output path: studio
+project template schema: Blog schema
+Open sanity.io/manage and copy the projectId: and dataset:production into .env.local
+cd into the project studio folder: sanity start (To start a local development server, cd into the project folder)
+```
+
 ```
 
 #### Step 2: Preparing for Deployment
@@ -353,15 +360,18 @@ sanity start (To start a local development server, cd into the project folder)
 To provide Vercel with routing information for the app, add a "vercel.json" file with the following content in the root directory medium-clone:
 
 ```
+
 {
 "version": 2,
 "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
+
 ```
 
 Add the following scripts to the Studio’s package.json file i.e sanity-medium-clone folder:
 
 ```
+
 {
 ...
 "scripts": {
@@ -370,13 +380,16 @@ Add the following scripts to the Studio’s package.json file i.e sanity-medium-
 "build": "sanity build public -y"
 }
 }
+
 ```
 
 Lastly, add @sanity/cli as a development dependency, this will allow Vercel to build your project on deployment.
 After saving your package.json file you will be ready to deploy your project.
 
 ```
+
 npm i --save-dev @sanity/cli
+
 ```
 
 #### Step 3: Deploy With Vercel
@@ -394,7 +407,9 @@ npm i --save-dev @sanity/cli
 Once Sanity Studio is deployed, you will need to add it's URL to Sanity’s CORS origins settings. You can do this from the command line:
 
 ```
+
 sanity cors add https://your-url.vercel.app --credentials
+
 ```
 
 You can confirm your origin was added with the statement CORS origin added successfully or by consulting the list returned by the command sanity cors list.
@@ -411,3 +426,4 @@ To add a CORS origin from your management console:
 - Under CORS Origins, click the Add CORS origin button
 - Enter your Origin, select whether or not to Allow credentials, and click Save.
 - If your origin was added successfully, it will appear at the top of your CORS origins list.
+```

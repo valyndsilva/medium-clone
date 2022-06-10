@@ -7,6 +7,9 @@ import Categories from '../components/Categories';
 import { sanityClient, urlFor } from '../lib/sanity';
 import { Post } from '../typings';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
+import Moment from 'react-moment';
+import 'moment-timezone';
+import { BookmarkAddOutlined, MoreHorizRounded } from '@mui/icons-material';
 interface Props {
   posts: [Post]; // array of type Post: Post[] or [Post]
 }
@@ -44,7 +47,7 @@ export default function Home({ posts }: Props) {
               <span className="underline decoration-black decoration-4 ">
                 Medium
               </span>
-              is a place to write, read and connect.
+              &nbsp;is a place to write, read and connect.
             </h1>
             <h2>
               Discover stories, thinking, and expertise from writers on any
@@ -86,7 +89,7 @@ export default function Home({ posts }: Props) {
                   <span className="text-xs">{post.author.name}</span>
                 </div>
                 <div className="flex justify-between  bg-white">
-                  <div className="flex w-3/5 items-center space-x-2">
+                  <div className="flex grow items-center space-x-2">
                     <div className="flex flex-col">
                       <h2 className="text-xl font-bold">
                         {truncateString(post.title, 40)}
@@ -94,15 +97,23 @@ export default function Home({ posts }: Props) {
                       <p className="text-md text-gray-500">
                         {truncateString(post.description, 50)}
                       </p>
+                      <div className="flex justify-between mt-1">
+                        <Moment
+                          fromNow
+                          className="text-sm text-gray-500 font-light p-2"
+                        >
+                          {post._createdAt}
+                        </Moment>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex w-2/5 items-center">
+                  <div className="flex-none  items-center">
                     {post.mainImage && (
                       <img
                         className="object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out"
                         src={urlFor(post.mainImage).url()!}
                         alt=""
-                        width={200}
+                        width={150}
                         height={134}
                       />
                     )}

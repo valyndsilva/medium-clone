@@ -25,7 +25,6 @@ import Link from 'next/link';
 import TrendingWidget from '../../components/TrendingWidget';
 import Image from 'next/image';
 import Categories from '../../components/Categories';
-import { fetchPost } from '../../utils/fetchPost';
 interface Props {
   post: Post;
   posts: [Post]; // array of type Post: Post[] or [Post]
@@ -53,7 +52,7 @@ function Post({ post, posts }: Props) {
     'Knowable',
   ];
   const [submitted, setSubmitted] = useState(false);
-  console.log(post);
+
   // React Hook Form
   const {
     register,

@@ -41,7 +41,7 @@ function Posts({ posts }: Props) {
                 <span className="text-xs">{post.author.name}</span>
               </div>
               <div className="flex justify-between  bg-white">
-                <div className="flex grow items-center space-x-2">
+                <div className="flex grow items-center mr-2">
                   <div className="flex flex-col">
                     <h2 className="text-xl font-bold">
                       {truncateString(post.title, 40)}

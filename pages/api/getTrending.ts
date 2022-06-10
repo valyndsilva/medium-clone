@@ -7,6 +7,7 @@ import { groq } from 'next-sanity';
 // Get Trending Posts from Sanity into App
 const feedQuery = groq`
 *[_type == "post" && trending == true]{
+    _id,
     "authorName": author->name,
     "authorImage": author->image.asset._ref,
 ...

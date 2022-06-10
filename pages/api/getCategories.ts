@@ -8,6 +8,7 @@ import { groq } from 'next-sanity';
 
 const feedQuery = groq`
 *[_type == "category"]{
+    _id,
    ...
    } | order(_createdAt desc)
 `;

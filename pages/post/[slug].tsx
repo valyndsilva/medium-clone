@@ -488,26 +488,25 @@ export const getStaticPaths = async () => {
 
 // This function runs only on the server side
 
-// export const getStaticProps: GetStaticProps = async ({params}) => {
-export const getStaticProps: GetStaticProps = async () => {
-  // const query = `*[_type == "post" && slug.current == $slug][0]{
-  //       _id,
-  //       _createdAt,
-  //       title,
-  //       author -> {
-  //       name,
-  //       image
-  //     },
-  //     'comments': *[
-  //       _type=="comment" &&
-  //       post._ref == ^._id &&
-  //       approved == true
-  //     ],
-  //     description,
-  //     mainImage,
-  //     slug,
-  //     body
-  //     }`;
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const query = `*[_type == "post" && slug.current == $slug][0]{
+        _id,
+        _createdAt,
+        title,
+        author -> {
+        name,
+        image
+      },
+      'comments': *[
+        _type=="comment" &&
+        post._ref == ^._id &&
+        approved == true
+      ],
+      description,
+      mainImage,
+      slug,
+      body
+      }`;
 
   // In the Params in sanity vision:
   //   {
@@ -516,18 +515,14 @@ export const getStaticProps: GetStaticProps = async () => {
 
   // Call an external API endpoint to get posts.
   // You can use any data fetching library
-  // const post = await sanityClient.fetch(query, {
-  //   slug: params?.slug,
-  // });
-  // if (!post) {
-  //   return {
-  //     notFound: true,
-  //   };
-  // }
-
-  // Instead of fetching your `/api` route here you can call the same function fetchPost directly in `getStaticProps`
-  const post = async (req: any) => await fetchPost(req.query.slug);
-  console.log({ post });
+  const post = await sanityClient.fetch(query, {
+    slug: params?.slug,
+  });
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
 
   // By returning { props: { posts } }, the Post component [slug].tsx will receive `post` as a prop at build time
   return {

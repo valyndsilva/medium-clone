@@ -40,7 +40,7 @@ function SideHeader() {
           <div className="">
             <ArticleOutlined />
           </div>
-          <hr className="my-2" />
+          <hr className="my-5" />
           <div className="">
             <ModeEditOutlineOutlined />
           </div>

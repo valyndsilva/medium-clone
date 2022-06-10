@@ -7,6 +7,7 @@ import { fetchTrending } from '../utils/fetchTrending';
 import Image from 'next/image';
 import { sanityClient, urlFor } from '../lib/sanity';
 import toast from 'react-hot-toast';
+import { BookmarkAddOutlined, MoreHorizRounded } from '@mui/icons-material';
 
 interface Props {
   posts: Post[];
@@ -48,13 +49,26 @@ function TrendingWidget({ posts }: Props) {
                 {trending.authorName}
               </p>
             </div>
-            <div className="flex flex-col ">
+            <div className="flex flex-col pr-4">
               <div className="grow space-x-1 max-w-sm">
                 <p className="text-sm font-semibold">{trending.title}</p>
               </div>
-              <Moment fromNow className="text-sm text-gray-500 font-light p-2">
-                {trending._createdAt}
-              </Moment>
+              <div className="flex justify-between mt-2">
+                <Moment
+                  fromNow
+                  className="text-sm text-gray-500 font-light p-2"
+                >
+                  {trending._createdAt}
+                </Moment>
+                <div className="flex items-center space-x-2">
+                  <div className="cursor-pointer text-gray-400 hover:text-gray-800">
+                    <BookmarkAddOutlined sx={{ fontSize: 24 }} />
+                  </div>
+                  <div className=" text-gray-400 cursor-pointer">
+                    <MoreHorizRounded sx={{ fontSize: 24 }} />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="flex-none p-5 w-20 h-20 my-auto items-center relative">

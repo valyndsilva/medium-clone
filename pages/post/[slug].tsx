@@ -84,8 +84,8 @@ function Post({ post, posts }: Props) {
           <div className="col-span-1">
             <SideHeader />
           </div>
-          <div className="col-span-6  w-full md:col-span-4 mx-auto">
-            <article className="mx-auto p-5">
+          <div className="col-span-6   w-full md:col-span-4 mx-auto">
+            <article className="mx-auto px-20 py-5">
               <div className="flex items-center justify-between space-x-2">
                 <div className="flex items-center space-x-5">
                   <img
@@ -310,12 +310,7 @@ function Post({ post, posts }: Props) {
                 </div>
               )}
             </article>
-
             <div className="flex flex-col font-bold text-sm border-b bg-gray-100 mt-5 px-20 py-10 border-t border-gray-300 mx-auto">
-              {/* <h3>
-                <TrendingUpRounded className="rounded-3xl border border-gray-500 text-gray-500 pr-1 mr-2" />
-                TRENDING ON MEDIUM
-              </h3> */}
               <div className="grid grid-cols-1 gap-3  p-2  max-w-8xl mt-5 mx-auto">
                 <h3>
                   <TrendingUpRounded className="rounded-3xl border border-gray-500 text-gray-500 pr-1 mr-2" />
@@ -328,6 +323,9 @@ function Post({ post, posts }: Props) {
           <div className="col-span-2 hidden md:inline">
             <div className="border-l h-full p-5">
               <div className="">
+                <button className="w-full rounded-full text-white bg-black/80 hover:bg-black/100 px-6 py-2 mb-6 ">
+                  Get unlimited access
+                </button>
                 <label className="relative block">
                   <span className="sr-only">Search</span>
                   <span className="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -341,7 +339,7 @@ function Post({ post, posts }: Props) {
                   />
                 </label>
               </div>
-              <div className="flex flex-col space-y-3 my-5">
+              <div className="flex flex-col space-y-2 my-6">
                 <img
                   className="h-14 w-14 rounded-full"
                   src={urlFor(post.author.image).url()!}
@@ -349,14 +347,15 @@ function Post({ post, posts }: Props) {
                 />
 
                 <span className="font-light text-md">{post.author.name}</span>
-                <p className="font-extralight text-sm">
+                <p className="font-extralight text-sm">1.97K Followers</p>
+                <p className="font-extralight text-xs">
                   I'm a Front-End Developer based in Qatar.
                 </p>
                 <div className="space-x-2 space-y-3 text-white">
-                  <button className="rounded-full bg-zinc-500 px-5 py-2 h-15">
+                  <button className="rounded-full bg-green-700 hover:bg-green-800 px-5 py-2 h-15">
                     Follow
                   </button>
-                  <button className="rounded-full  bg-zinc-500 p-2 h-15">
+                  <button className="rounded-full  bg-green-700 hover:bg-green-800 p-2">
                     <MailOutline />
                   </button>
                 </div>

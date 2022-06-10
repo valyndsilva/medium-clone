@@ -25,6 +25,7 @@ import Link from 'next/link';
 import TrendingWidget from '../../components/TrendingWidget';
 import Image from 'next/image';
 import Categories from '../../components/Categories';
+import { fetchPost } from '../../utils/fetchPost';
 interface Props {
   post: Post;
   posts: [Post]; // array of type Post: Post[] or [Post]
@@ -391,6 +392,11 @@ function Post({ post, posts }: Props) {
 
 export default Post;
 
+// Implement ISR:  (Static Site Generation)
+//1.getStaticPaths
+// If a page has Dynamic Routes and uses getStaticProps, it needs to define a list of paths to be statically generated.
+
+// When you export a function called getStaticPaths (Static Site Generation) from a page that uses dynamic routes, Next.js will statically pre-render all the paths specified by getStaticPaths.
 export const getStaticPaths = async () => {
   // Lets nextJS know which routes it should pre-build /pre-fetch in advance
   const query = `*[_type == "post"]{
@@ -400,55 +406,157 @@ export const getStaticPaths = async () => {
   }
   }`;
   const posts = await sanityClient.fetch(query);
+
+  // Get the paths we want to pre-render based on posts
   const paths = posts.map((post: Post) => ({
     params: { slug: post.slug.current },
   }));
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: blocking } will server-render pages
+  // on-demand if the path doesn't exist.
   return {
     paths,
     fallback: 'blocking', //blocks page from showing or shows 404 if page doesn't exist. fallback returns true, false or blocking.
   };
 };
+//2. getStaticPaths must be used with getStaticProps. You cannot use it with getServerSideProps.
+
+// The getStaticPaths API reference covers all parameters and props that can be used with getStaticPaths.
+
+//3.When should I use getStaticPaths?
+// You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes and:
+// The data comes from a headless CMS
+// The data comes from a database
+// The data comes from the filesystem
+// The data can be publicly cached (not user-specific)
+// The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance
+// 4.When does getStaticPaths run?:
+// getStaticPaths will only run during build in production, it will not be called during runtime. You can validate code written inside getStaticPaths is removed from the client-side bundle with this tool.
+
+// getStaticProps runs during next build for any paths returned during build
+// getStaticProps runs in the background when using fallback: true
+// getStaticProps is called before initial render when using fallback: blocking
+
+//5. Where can I use getStaticPaths
+// getStaticPaths can only be exported from a dynamic route that also uses getStaticProps. You cannot export it from non-page files e.g. from your components folder.
+
+// Note that you must use export getStaticPaths as a standalone function — it will not work if you add getStaticPaths as a property of the page component.
+
+// Implement Incremental Static generation (ISR):
+// Next.js allows you to create or update static pages after you’ve built your site. Incremental Static Regeneration (ISR) enables you to use static-generation on a per-page basis, without needing to rebuild the entire site. With ISR, you can retain the benefits of static while scaling to millions of pages.
+
+// To use ISR, add the revalidate prop to getStaticProps:
 
 // When NextJS tries to pre-build/ pre-fetch the page we need to tell how to use the post slug or id to fetch the info.
 // Go to each page and getStaticProps:
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const query = `*[_type == "post" && slug.current == $slug][0]{
-        _id,
-        _createdAt,
-        title,
-        author -> {
-        name,
-        image
-      },
-      'comments': *[
-        _type=="comment" &&
-        post._ref == ^._id &&
-        approved == true
-      ],
-      description,
-      mainImage,
-      slug,
-      body
-      }`;
 
-  // In the Params:
+// getStaticProps
+// If you export a function called getStaticProps (Static Site Generation) from a page, Next.js will pre-render this page at build time using the props returned by getStaticProps.
+
+//When should I use getStaticProps?
+// You should use getStaticProps if:
+
+// The data required to render the page is available at build time ahead of a user’s request
+// The data comes from a headless CMS
+// The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance
+// The data can be publicly cached (not user-specific). This condition can be bypassed in certain specific situation by using a Middleware to rewrite the path.
+// When does getStaticProps run
+// getStaticProps always runs on the server and never on the client. You can validate code written inside getStaticProps is removed from the client-side bundle with this tool.
+
+// getStaticProps always runs during next build
+// getStaticProps runs in the background when using revalidate
+// getStaticProps runs on-demand in the background when using unstable_revalidate
+// When combined with Incremental Static Regeneration, getStaticProps will run in the background while the stale page is being revalidated, and the fresh page served to the browser.
+
+// getStaticProps does not have access to the incoming request (such as query parameters or HTTP headers) as it generates static HTML. If you need access to the request for your page, consider using Middleware in addition to getStaticProps.
+
+// Using getStaticProps to fetch data from a CMS:
+
+// This function gets called at build time on server-side.
+// It won't be called on client-side, so you can even do
+// direct database queries.
+
+//The getStaticProps API reference covers all parameters and props that can be used with getStaticProps.
+
+//Write server-side code directly
+// As getStaticProps runs only on the server-side, it will never run on the client-side. It won’t even be included in the JS bundle for the browser, so you can write direct database queries without them being sent to browsers.
+
+// This means that instead of fetching an API route from getStaticProps (that itself fetches data from an external source), you can write the server-side code directly in getStaticProps.
+
+// An API route is used to fetch some data from a CMS. That API route is then called directly from getStaticProps. This produces an additional call, reducing performance. Instead, the logic for fetching the data from the CMS can be shared by using a lib/ or /utils directory. Then it can be shared with getStaticProps.
+
+// This function runs only on the server side
+
+// export const getStaticProps: GetStaticProps = async ({params}) => {
+export const getStaticProps: GetStaticProps = async () => {
+  // const query = `*[_type == "post" && slug.current == $slug][0]{
+  //       _id,
+  //       _createdAt,
+  //       title,
+  //       author -> {
+  //       name,
+  //       image
+  //     },
+  //     'comments': *[
+  //       _type=="comment" &&
+  //       post._ref == ^._id &&
+  //       approved == true
+  //     ],
+  //     description,
+  //     mainImage,
+  //     slug,
+  //     body
+  //     }`;
+
+  // In the Params in sanity vision:
   //   {
   //    "slug": "test-post-1"
   //   }
 
-  const post = await sanityClient.fetch(query, {
-    slug: params?.slug,
-  });
-  if (!post) {
-    return {
-      notFound: true,
-    };
-  }
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+  // const post = await sanityClient.fetch(query, {
+  //   slug: params?.slug,
+  // });
+  // if (!post) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
+
+  // Instead of fetching your `/api` route here you can call the same function fetchPost directly in `getStaticProps`
+  const post = async (req: any) => await fetchPost(req.query.slug);
+  console.log({ post });
+
+  // By returning { props: { posts } }, the Post component [slug].tsx will receive `post` as a prop at build time
   return {
     props: {
       post,
     },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 60 seconds
     revalidate: 60, // this enables ISR and updates the old cache version after 60 seconds
     // It basically server side renders the page after 60 seconds and caches it and that one gets served for the next 60 secs in a static way
   };
 };
+
+//Statically generates both HTML and JSON
+// When a page with getStaticProps is pre-rendered at build time, in addition to the page HTML file, Next.js generates a JSON file holding the result of running getStaticProps.
+
+// This JSON file will be used in client-side routing through next/link or next/router. When you navigate to a page that’s pre-rendered using getStaticProps, Next.js fetches this JSON file (pre-computed at build time) and uses it as the props for the page component. This means that client-side page transitions will not call getStaticProps as only the exported JSON is used.
+
+// When using Incremental Static Generation, getStaticProps will be executed in the background to generate the JSON needed for client-side navigation. You may see this in the form of multiple requests being made for the same page, however, this is intended and has no impact on end-user performance.
+
+// Where can I use getStaticProps
+// getStaticProps can only be exported from a page. You cannot export it from non-page files.
+
+// One of the reasons for this restriction is that React needs to have all the required data before the page is rendered.
+
+// Also, you must use export getStaticProps as a standalone function — it will not work if you add getStaticProps as a property of the page component.
+
+// Incremental Static Regeneration
+// Next.js allows you to create or update static pages after you’ve built your site. Incremental Static Regeneration (ISR) enables you to use static-generation on a per-page basis, without needing to rebuild the entire site. With ISR, you can retain the benefits of static while scaling to millions of pages.
+
+// To use ISR, add the revalidate prop to getStaticProps:

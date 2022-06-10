@@ -84,8 +84,8 @@ function Posts({ posts }: Props) {
         </div>
         <hr className="mt-5" />
         <div className="flex flex-start  flex-wrap  mt-5 space-x-4 text-gray-400 text-sm">
-          {footerLinks.map((footerLink) => (
-            <span>{footerLink}</span>
+          {footerLinks.map((footerLink, index) => (
+            <span key={index}>{footerLink}</span>
           ))}
         </div>
       </div>

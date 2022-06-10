@@ -2,6 +2,7 @@ import { Post } from '../typings';
 // Fetch Trending Posts from getTrending to use into App
 export const fetchCategories = async () => {
   // Make a REST API call to backend
+    // Call an external API endpoint to get categories
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/getCategories`
   );

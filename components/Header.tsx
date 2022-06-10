@@ -4,9 +4,11 @@ import logoPic from '../public/medium-logo.png';
 function Header({ color = '' }) {
   return (
     <header
-      className={'flex w-full justify-between py-4 px-4 ' + (color ?? '')}
+      className={
+        'flex w-full justify-between px-10 max-w-7xl mx-auto ' + (color ?? '')
+      }
     >
-      <div className="flex space-x-5 ">
+      <div className="space-x-5 ">
         <Link href="/">
           <div className="w-40 h-20 md:w-30  lg:w-44 cursor-pointer relative">
             <Image

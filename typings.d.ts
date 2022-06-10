@@ -15,7 +15,8 @@ export interface Post {
   };
   body: [object];
   trending: boolean;
-  trendings: Trending[];
+  trendings: string[];
+  category: string[];
 }
 
 export interface Comment {

@@ -9,3 +9,23 @@ Now you can do the following things:
 - [Read the blog post about this template](https://www.sanity.io/blog/build-your-own-blog-with-sanity-and-next-js?utm_source=readme)
 - [Join the community Slack](https://slack.sanity.io/?utm_source=readme)
 - [Extend and build plugins](https://www.sanity.io/docs/content-studio/extending?utm_source=readme)
+
+The following code helps to get the posts from a category by it's slug.
+
+`*[_type == 'post' && $slug in categories[]->slug.current ]`;
+
+The following code helps to get all categories:
+
+```
+*[_type == "category"]{
+categories,
+...
+
+}
+```
+
+\*[_type == 'post']{
+
+"category": categories[]->title,
+
+}| order(\_createdAt desc)

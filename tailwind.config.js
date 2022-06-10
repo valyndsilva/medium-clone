@@ -8,6 +8,10 @@ module.exports = {
       colors: {
         medium: '#FEC016',
       },
+
+      gridColumn: {
+        'span-16': 'span 16 / span 16',
+      },
     },
   },
   plugins: [],

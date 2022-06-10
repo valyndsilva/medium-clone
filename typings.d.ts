@@ -7,6 +7,8 @@ export interface Post {
     name: string;
     image: string;
   };
+  authorName: string;
+  authorImage: string;
   comments: Comment[];
   description: string;
   mainImage: { asset: { url: string } };

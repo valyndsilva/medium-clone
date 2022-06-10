@@ -72,8 +72,8 @@ export default function Home({ posts }: Props) {
         </div>
       </div>
       {/* Posts */}
-      <div className="grid grid-cols-3 gap-12 mt-5 mx-auto max-w-7xl px-20 mb-10">
-        <div className="col-span-2">
+      <div className="grid grid-cols-3 gap-12  mx-auto max-w-7xl px-20 ">
+        <div className="col-span-2 my-10">
           {posts.map((post) => (
             <Link key={post._id} href={`/post/${post.slug.current}`}>
               <div className="group cursor-pointer overflow-hidden my-5">
@@ -112,7 +112,7 @@ export default function Home({ posts }: Props) {
             </Link>
           ))}
         </div>
-        <div className="col-span-1 ">
+        <div className="col-span-1 border-l p-5">
           <div className="">
             <h4 className="font-bold text-xs">
               DISCOVER MORE OF WHAT MATTERS TO YOU

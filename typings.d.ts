@@ -1,24 +1,29 @@
-export interface Post {
-  // Refer to sanity query result to get the properties of the post
-  _id: string;
-  _createdAt: string;
+export type PostBody = {
   title: string;
+  description: string;
+  slug: {
+    current: string;
+  };
   author: {
     name: string;
     image: string;
   };
   authorName: string;
   authorImage: string;
-  comments: Comment[];
-  description: string;
   mainImage: { asset: { url: string } };
-  slug: {
-    current: string;
-  };
+
+  category: string[];
+  error?: string;
+  _publishedAt: string;
   body: [object];
   trending: boolean;
+};
+export interface Post extends PostBody {
+  // Refer to sanity query result to get the properties of the post
+  _id: string;
+  _createdAt: string;
+  comments: Comment[];
   trendings: string[];
-  category: string[];
 }
 
 export interface Comment {
